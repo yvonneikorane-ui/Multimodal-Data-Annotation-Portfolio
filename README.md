@@ -10,7 +10,7 @@ This repository serves as a production-grade demonstration of end-to-end multimo
 
 Designed to meet enterprise guidelines for frontier LLM fine-tuning and computer vision pipelines, this portfolio highlights strict adherence to taxonomy rules, edge-case resolution, and structural data governance.
 
----
+
 
 ## 📂 Portfolio Structure
 
