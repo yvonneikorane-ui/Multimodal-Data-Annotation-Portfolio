@@ -1,0 +1,9 @@
+```csv
+Row_ID,Source_Dataset,Key_Attribute,Error_Type,Severity,Flagged_Value,Corrected_Value,Resolution_Action,Auditor_Notes
+12,image_batch_04,bbox_coords,Null Coordinate,High,"[450, 320, null, 240]","[450, 320, 120, 240]",Re-annotated via interpolation,Caught during schema validation script execution
+45,image_batch_04,label_class,Taxonomy Typo,Medium,Pedestran,Pedestrian_Occluded,Updated via automated dictionary map,Invalid label string breaking model parser
+89,video_seq_88,timestamp,Format Mismatch,Low,1725960000,2026-09-10T09:20:00Z,Standardized to ISO-8601,Epoch timestamp converted to UTC string
+102,llm_text_eval,score_metric,Range Violation,High,6,5,Capped at max matrix scale value,Model score exceeded 1-5 evaluation bounds
+134,image_batch_05,segmentation,Polygon Self-Intersection,High,Unclosed Vector Ring,Closed Valid Polygon,Re-drawn bounding polygon in CVAT tool,Self-intersecting vector caused masking failure
+156,metadata_logs,language_code,ISO Code Error,Low,en-NGA,en_NG,Normalized BCP 47 locale format,Corrected underscore locale tag for database ingest
+210,image_batch_06,occlusion_level,Ambiguous Label,Medium,Unknown,partial_30%,Manual visual verification applied,Assigned explicit percentage based on object visibility guidelines
