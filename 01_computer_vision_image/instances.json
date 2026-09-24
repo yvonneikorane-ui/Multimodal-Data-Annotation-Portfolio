@@ -1,0 +1,87 @@
+{
+  "info": {
+    "description": "Enterprise Autonomous Driving Computer Vision Dataset - High Density Urban Intersection",
+    "url": "https://github.com/yvonneikorane-ui/Multimodal-Data-Annotation-Portfolio",
+    "version": "2.1.0",
+    "year": 2026,
+    "contributor": "Yvonne Obi (AI Data Evaluation Specialist)",
+    "date_created": "2026-09-12T08:30:00Z"
+  },
+  "licenses": [
+    {
+      "id": 1,
+      "name": "MIT License",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  ],
+  "images": [
+    {
+      "id": 101,
+      "width": 1920,
+      "height": 1080,
+      "file_name": "cam_front_telephoto_urban_intersection_01.jpg",
+      "license": 1,
+      "date_captured": "2026-09-10T14:22:15Z",
+      "camera_calibration": {
+        "focal_length_mm": 50,
+        "lighting_condition": "direct_sunlight",
+        "weather": "clear"
+      }
+    }
+  ],
+  "categories": [
+    { "id": 1, "name": "Pedestrian_Occluded", "supercategory": "human" },
+    { "id": 2, "name": "Vehicle_Car", "supercategory": "vehicle" },
+    { "id": 3, "name": "Traffic_Sign_SpeedLimit", "supercategory": "signage" },
+    { "id": 4, "name": "Vulnerable_Road_User_Cyclist", "supercategory": "human_transport" }
+  ],
+  "annotations": [
+    {
+      "id": 5001,
+      "image_id": 101,
+      "category_id": 3,
+      "bbox": [450, 320, 120, 240],
+      "area": 28800,
+      "segmentation": [[450, 320, 570, 320, 570, 560, 450, 560]],
+      "iscrowd": 0,
+      "attributes": {
+        "occlusion_level": "partial_15%",
+        "truncation": "0%",
+        "sign_value": "40_KMH",
+        "visibility": "clear",
+        "confidence_score": 0.99
+      }
+    },
+    {
+      "id": 5002,
+      "image_id": 101,
+      "category_id": 1,
+      "bbox": [880, 410, 65, 185],
+      "area": 12025,
+      "segmentation": [[880, 410, 945, 410, 945, 595, 880, 595]],
+      "iscrowd": 0,
+      "attributes": {
+        "occlusion_level": "severe_60%",
+        "occluded_by": "street_furniture_mail_post",
+        "truncation": "0%",
+        "facing_direction": "crosswalk_bound",
+        "confidence_score": 0.95
+      }
+    },
+    {
+      "id": 5003,
+      "image_id": 101,
+      "category_id": 2,
+      "bbox": [1120, 500, 340, 210],
+      "area": 71400,
+      "segmentation": [[1120, 500, 1460, 500, 1460, 710, 1120, 710]],
+      "iscrowd": 0,
+      "attributes": {
+        "occlusion_level": "none_0%",
+        "truncation": "marginal_frame_cut_5%",
+        "brake_lights_active": true,
+        "confidence_score": 0.98
+      }
+    }
+  ]
+}
