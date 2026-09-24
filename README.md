@@ -3,7 +3,7 @@
 **Author:** Yvonne Obi (PMP®, M.Sc. IT)  
 **Role:** Technical Program Manager & Lead Multimodal AI Data Evaluation Specialist  
 
----
+
 
 ## Executive Overview
 This repository serves as a production-grade demonstration of end-to-end multimodal AI data annotation, computer vision dataset tracking, Reinforcement Learning from Human Feedback (RLHF) model evaluation, and dataset quality auditing. 
