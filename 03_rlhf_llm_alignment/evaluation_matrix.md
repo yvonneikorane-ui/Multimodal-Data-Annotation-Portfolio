@@ -1,5 +1,3 @@
-# Module 3: LLM Alignment, RLHF & Text-Situated Evaluation
-
 ## Benchmark Objective
 As a Lead AI Data Evaluator, evaluate state-of-the-art Large Language Model (LLM) outputs under complex social, organizational, and interpersonal constraints. This evaluation measures multi-turn coherence, prompt instruction following, safety policy compliance, and qualitative response alignment.
 
