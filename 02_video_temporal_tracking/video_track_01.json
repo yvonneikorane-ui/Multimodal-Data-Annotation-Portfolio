@@ -1,0 +1,84 @@
+{
+  "sequence_metadata": {
+    "video_id": "seq_vid_urban_traffic_8842",
+    "source_camera": "front_dashcam_1080p",
+    "fps": 30,
+    "total_frames": 90,
+    "duration_seconds": 3.0,
+    "annotator_id": "evaluator_yvonne_obi"
+  },
+  "tracks": [
+    {
+      "track_id": "OBJ_204_CYCLIST",
+      "label": "Vulnerable_Road_User_Cyclist",
+      "tracking_method": "keyframe_interpolation_linear",
+      "keyframes": [
+        {
+          "frame": 1,
+          "timestamp": "00:00:00.033",
+          "bbox": [100, 200, 50, 80],
+          "interpolated": false,
+          "state": "Action_Start",
+          "attributes": {
+            "lane_position": "bike_lane_right",
+            "helmet_worn": true,
+            "hand_signal": "none"
+          }
+        },
+        {
+          "frame": 15,
+          "timestamp": "00:00:00.500",
+          "bbox": [140, 205, 52, 81],
+          "interpolated": true,
+          "state": "In_Motion",
+          "attributes": {
+            "lane_position": "transitioning_to_crosswalk",
+            "helmet_worn": true,
+            "hand_signal": "left_turn_indicated"
+          }
+        },
+        {
+          "frame": 30,
+          "timestamp": "00:00:01.000",
+          "bbox": [180, 210, 50, 80],
+          "interpolated": false,
+          "state": "Action_Stop",
+          "attributes": {
+            "lane_position": "crosswalk_center",
+            "helmet_worn": true,
+            "hand_signal": "none"
+          }
+        }
+      ]
+    },
+    {
+      "track_id": "OBJ_205_PEDESTRIAN",
+      "label": "Pedestrian_Child",
+      "tracking_method": "keyframe_interpolation_linear",
+      "keyframes": [
+        {
+          "frame": 1,
+          "timestamp": "00:00:00.033",
+          "bbox": [50, 220, 30, 60],
+          "interpolated": false,
+          "state": "Stationary_Sidewalk",
+          "attributes": {
+            "accompanied": true,
+            "occlusion_level": "none"
+          }
+        },
+        {
+          "frame": 30,
+          "timestamp": "00:00:01.000",
+          "bbox": [85, 222, 32, 61],
+          "interpolated": false,
+          "state": "Entering_Crosswalk",
+          "attributes": {
+            "accompanied": true,
+            "occlusion_level": "partial_20%"
+          }
+        }
+      ]
+    }
+  ]
+}
