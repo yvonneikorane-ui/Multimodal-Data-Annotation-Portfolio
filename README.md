@@ -15,7 +15,29 @@ Designed to meet enterprise guidelines for frontier LLM fine-tuning and computer
 ## 📂 Portfolio Structure
 
 ```text
-├── 01_computer_vision_image/      # Bounding box & COCO JSON dataset annotations
-├── 02_video_temporal_tracking/    # Keyframe tracking & state classification metadata
-├── 03_rlhf_llm_alignment/         # Multi-turn prompt evaluation & rating matrices
-└── 04_data_quality_audit/         # Anomaly detection & dataset cleaning logs
+Multimodal-Data-Annotation-Portfolio/
+│
+├── 01_computer_vision_image/
+│   ├── annotation_guidelines.md
+│   ├── instances.json
+│   └── validate_coco_schema.py
+│
+├── 02_video_temporal_tracking/
+│   ├── evaluate_tracking_mot.py
+│   ├── tracking_rubric.md
+│   └── video_track_01.json
+│
+├── 03_rlhf_llm_alignment/
+│   ├── alignment_taxonomy.md
+│   ├── evaluation_matrix.md
+│   └── pairwise_eval_pipeline.py
+│
+├── 04_data_quality_audit/
+│   ├── audit_methodology.md
+│   ├── iaa_calculator.py
+│   └── qa_audit_log.csv
+│
+├── .gitignore
+├── LICENSE
+├── README.md
+└── requirements.txt
