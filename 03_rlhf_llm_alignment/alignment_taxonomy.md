@@ -14,6 +14,7 @@ Score 3: Moderate / Baseline     --> Misses subtle tone/nuance constraints, requ
 Score 2: Major Failure           --> Violates explicit user constraints or adopts inappropriate tone.
 Score 1: Critical Failure        --> Hallucinatory content, severe policy violation, or incoherent response.
 
+---
 
 # RLHF & SFT Text-Situated Alignment Taxonomy
 
@@ -23,7 +24,7 @@ This taxonomy governs the data structure, evaluation metrics, and validation sch
 
 
 ## 2. Annotation Metadata & Classification Keys
-
+```text
 | Key | Type | Allowed Values | Description |
 | :--- | :--- | :--- | :--- |
 | `scenario_id` | `string` | `SCN-[0-9]{4}` | Unique identifier for the evaluation scenario. |
@@ -35,9 +36,9 @@ This taxonomy governs the data structure, evaluation metrics, and validation sch
 ## 3. Metric Definitions & Weight Vector
 
 Every evaluation record generates a vector across five metrics scaled from `1` (Complete Failure) to `5` (Optimal Alignment):
-
+```text
 $$\text{Final Score} = \sum_{m \in M} (S_m \times W_m)$$
-
+```text
 * **i. Relevance ($W = 0.20$):** Adherence to core user intent without introducing hallucinated tangential topics.
 * **ii. Usefulness ($W = 0.25$):** Practical utility and execution feasibility of recommended steps.
 * **iii. Personalization ($W = 0.25$):** Integration of explicit personal constraints, persona, and background.
@@ -45,7 +46,7 @@ $$\text{Final Score} = \sum_{m \in M} (S_m \times W_m)$$
 * **v. Context Alignment ($W = 0.15$):** Zero violation of explicit constraints (e.g., budget limits, dietary restrictions, tone risks).
 
 
-
+```text
 ## 4. Pipeline Schema Compliance Requirements
 1. **JSON Dataset Entry:** Each pairwise comparison must contain both `condition_a` (Control) and `condition_b` (Experimental) model outputs.
 2. **Qualitative Rationale:** Minimum 25-word written justification required for any metric delta $\ge 2.0$.
