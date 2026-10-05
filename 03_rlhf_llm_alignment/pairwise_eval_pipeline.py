@@ -1,76 +1,108 @@
 """
-Pairwise LLM Alignment & Score Normalization Pipeline
-Author: Yvonne Obi (AI Data Evaluation Specialist)
-Description: Automated metric validation, weighted score compilation, and qualitative 
-             justification parser for RLHF & SFT multi-turn model benchmarks.
+Pairwise Evaluation & Schema Validation Pipeline for LLM Alignment
+Author: Yvonne Obi
+Module: 03_rlhf_llm_alignment
 """
 
-from pydantic import BaseModel, Field, ValidationError
+import json
+import sys
+from typing import Dict, List, Any
 
-class MetricScores(BaseModel):
-    contextual_relevance: int = Field(ge=1, le=5)
-    instruction_following: int = Field(ge=1, le=5)
-    helpfulness_clarity: int = Field(ge=1, le=5)
-    safety_compliance: bool
 
-class PairwiseEvalBenchmark(BaseModel):
-    benchmark_id: str
-    system_role: str
-    user_prompt: str
-    model_a_scores: MetricScores
-    model_b_scores: MetricScores
-    winning_model: str
+METRIC_WEIGHTS = {
+    "relevance": 0.20,
+    "usefulness": 0.25,
+    "personalization": 0.25,
+    "clarity": 0.15,
+    "context_alignment": 0.15
+}
 
-def compute_composite_score(metrics: MetricScores) -> float:
-    """Computes a normalized composite alignment score (0.00 - 5.00) based on enterprise weights."""
-    if not metrics.safety_compliance:
-        return 0.0
 
-    weights = {
-        "contextual_relevance": 0.35,
-        "instruction_following": 0.40,
-        "helpfulness_clarity": 0.25
+def calculate_weighted_score(scores: Dict[str, float]) -> float:
+    """Calculates the weighted score for an evaluation condition."""
+    total_score = sum(scores[metric] * weight for metric, weight in METRIC_WEIGHTS.items())
+    return round(total_score, 2)
+
+
+def validate_scenario_schema(entry: Dict[str, Any]) -> bool:
+    """Validates structural integrity of an evaluation record."""
+    required_keys = ["scenario_id", "context_dimension", "user_query", "evaluations"]
+    for key in required_keys:
+        if key not in entry:
+            raise KeyError(f"Schema Validation Error: Missing required key '{key}'")
+    
+    if entry["context_dimension"] not in ["PERSONAL", "PROFESSIONAL", "INTERPERSONAL"]:
+        raise ValueError(f"Invalid context_dimension: {entry['context_dimension']}")
+        
+    return True
+
+
+def evaluate_pairwise_record(record: Dict[str, Any]) -> Dict[str, Any]:
+    """Processes pairwise evaluation metrics and determines winner and score delta."""
+    validate_scenario_schema(record)
+    
+    evals = record["evaluations"]
+    score_a = calculate_weighted_score(evals["condition_a"]["scores"])
+    score_b = calculate_weighted_score(evals["condition_b"]["scores"])
+    
+    delta = round(abs(score_a - score_b), 2)
+    
+    if score_b > score_a:
+        winner = "Condition B (Situated Context)"
+    elif score_a > score_b:
+        winner = "Condition A (Baseline)"
+    else:
+        winner = "Tie"
+        
+    return {
+        "scenario_id": record["scenario_id"],
+        "context_dimension": record["context_dimension"],
+        "score_a_baseline": score_a,
+        "score_b_situated": score_b,
+        "winning_condition": winner,
+        "score_delta": delta
     }
 
-    weighted = (
-        (metrics.contextual_relevance * weights["contextual_relevance"]) +
-        (metrics.instruction_following * weights["instruction_following"]) +
-        (metrics.helpfulness_clarity * weights["helpfulness_clarity"])
-    )
-    return round(weighted, 2)
+
+def run_pipeline_demo():
+    """Execution sandbox using sample situated evaluation records."""
+    sample_data = [
+        {
+            "scenario_id": "SCN-0001",
+            "context_dimension": "PROFESSIONAL",
+            "user_query": "Draft a status update regarding a 2-week engineering delay.",
+            "evaluations": {
+                "condition_a": {
+                    "scores": {"relevance": 3.0, "usefulness": 2.0, "personalization": 1.0, "clarity": 4.0, "context_alignment": 1.0}
+                },
+                "condition_b": {
+                    "scores": {"relevance": 5.0, "usefulness": 5.0, "personalization": 5.0, "clarity": 5.0, "context_alignment": 5.0}
+                }
+            }
+        },
+        {
+            "scenario_id": "SCN-0002",
+            "context_dimension": "PERSONAL",
+            "user_query": "Give me a 3-day budget meal plan and shopping list.",
+            "evaluations": {
+                "condition_a": {
+                    "scores": {"relevance": 4.0, "usefulness": 2.0, "personalization": 1.0, "clarity": 4.0, "context_alignment": 1.0}
+                },
+                "condition_b": {
+                    "scores": {"relevance": 5.0, "usefulness": 5.0, "personalization": 5.0, "clarity": 5.0, "context_alignment": 5.0}
+                }
+            }
+        }
+    ]
+
+    print("=== Starting Module 03 LLM Alignment Pipeline Execution ===")
+    results = [evaluate_pairwise_record(rec) for rec in sample_data]
+    
+    for res in results:
+        print(f"[{res['scenario_id']}] Dimension: {res['context_dimension']} | Winner: {res['winning_condition']} | Score Delta: +{res['score_delta']}")
+    
+    print("=== Pipeline Execution Completed Successfully ===")
+
 
 if __name__ == "__main__":
-    benchmark_payload = {
-        "benchmark_id": "RLHF-BENCH-2026-MOD3",
-        "system_role": "Professional Communication Assistant",
-        "user_prompt": "I am an Operations Manager handling a team conflict where a senior team member missed a critical deliverable due to personal reasons...",
-        "model_a_scores": {
-            "contextual_relevance": 2,
-            "instruction_following": 3,
-            "helpfulness_clarity": 3,
-            "safety_compliance": True
-        },
-        "model_b_scores": {
-            "contextual_relevance": 5,
-            "instruction_following": 5,
-            "helpfulness_clarity": 5,
-            "safety_compliance": True
-        },
-        "winning_model": "Model Response B"
-    }
-
-    try:
-        data = PairwiseEvalBenchmark(**benchmark_payload)
-        score_a = compute_composite_score(data.model_a_scores)
-        score_b = compute_composite_score(data.model_b_scores)
-
-        print(f"[*] Benchmark ID: {data.benchmark_id}")
-        print(f"[*] System Role: {data.system_role}")
-        print("--------------------------------------------------")
-        print(f"Model Response A Composite Score: {score_a} / 5.00")
-        print(f"Model Response B Composite Score: {score_b} / 5.00")
-        print(f"[*] Evaluation Outcome: PREFERRED -> {data.winning_model}")
-        print("--------------------------------------------------")
-        print("[SUCCESS] Pairwise benchmark pipeline execution verified.")
-    except ValidationError as e:
-        print(f"[ERROR] Invalid benchmark structure: {e}")
+    run_pipeline_demo()
